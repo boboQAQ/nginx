@@ -1,0 +1,9 @@
+CREATE DATABASE iot_stack_monitor;
+CREATE DATABASE iot_stack_log;
+show databases;
+alter retention policy autogen on iot_stack_log duration 2208h SHARD DURATION 168h REPLICATION 1 DEFAULT;
+alter retention policy autogen on iot_stack_monitor duration 2208h SHARD DURATION 168h REPLICATION 1 DEFAULT;
+show retention policies on iot_stack_log;
+show retention policies on iot_stack_monitor;
+CREATE CONTINUOUS QUERY "cq_uplink" ON "iot_stack_monitor" RESAMPLE FOR 2h BEGIN SELECT sum(count) AS "count" INTO "iot_stack_monitor"."autogen"."statistic_uplink" FROM "iot_stack_monitor"."autogen"."uplink" GROUP BY time(1m),product_sn,project_id END
+CREATE CONTINUOUS QUERY "cq_downlink" ON "iot_stack_monitor" RESAMPLE FOR 2h BEGIN SELECT sum(count) AS "count" INTO "iot_stack_monitor"."autogen"."statistic_downlink" FROM "iot_stack_monitor"."autogen"."downlink" GROUP BY time(1m),product_sn,project_id END

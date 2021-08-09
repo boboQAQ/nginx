@@ -1,0 +1,7 @@
+FROM influxdb:1.7-alpine
+COPY init.iql /docker-entrypoint-initdb.d/
+ENV INFLUXDB_ADMIN_USER iot_stack
+ENV INFLUXDB_ADMIN_PASSWORD uiotstack_123456
+ENV INFLUXDB_UDP_ENABLED true
+ENV INFLUXDB_UDP_DATABASE iot_stack_log
+ENV INFLUXDB_HTTP_MAX_BODY_SIZE 0
